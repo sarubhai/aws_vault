@@ -123,4 +123,5 @@ AWS_DEFAULT_REGION = "us-east-2"
 - Login to openvpn_access_server_ip with user as openvpn & vpn_admin_password
 - Download the VPN connection profile
 - Download & use OpenVPN client to connect to AWS VPC.
+- SSH Login to centos@10.0.1.91; The Vault root token & Recovery Key is saved in files namely root_token & recovery_key respectively.
 - Finally browse the Vault UI at [https://dc1-vault1.local:8200](https://dc1-vault1.local:8200)
