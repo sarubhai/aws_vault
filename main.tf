@@ -34,6 +34,7 @@ module "instances" {
   fixed_pvt_ip         = var.fixed_pvt_ip
   vault_sg_id          = module.sg.vault_sg_id
   database_sg_id       = module.sg.database_sg_id
+  domain               = var.domain
   vault_dc1_instances  = var.vault_dc1_instances
   vault_dc2_instances  = var.vault_dc2_instances
   vault_dc3_instances  = var.vault_dc3_instances
