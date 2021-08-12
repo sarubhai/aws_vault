@@ -38,6 +38,10 @@ variable "database_sg_id" {
   description = "Security Group for Database Server."
 }
 
+variable "domain" {
+  description = "DNS Domain Name."
+}
+
 variable "vault_dc1_instances" {
   description = "The Vault DC1 Instances."
 }

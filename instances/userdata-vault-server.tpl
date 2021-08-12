@@ -27,10 +27,10 @@ sudo yum -y install python3-pip
 sudo yes | pip3 install awscli
 
 ## Set Hostname
-sudo hostnamectl set-hostname "${vault_node_name}.local"
+sudo hostnamectl set-hostname "${vault_node_name}.${domain}"
 ## Set hostnames aliases
 %{ for address, name in all_node_address_names  ~}
-echo "${address} ${name} ${name}.local" | sudo tee -a /etc/hosts
+echo "${address} ${name} ${name}.${domain}" | sudo tee -a /etc/hosts
 %{ endfor ~}
 ## Configure Vault user
 sudo /usr/sbin/groupadd --force --system vault
@@ -89,7 +89,7 @@ storage "raft" {
   node_id              = "${vault_node_name}"
 %{ for address, name in vault_node_address_names  ~}
   retry_join {
-    leader_api_addr    = "https://${name}.local:8200"
+    leader_api_addr    = "https://${name}.${domain}:8200"
   }
 %{ endfor ~}
 }
@@ -111,8 +111,8 @@ seal "awskms" {
 }
 
 cluster_name           = "vault-${cluster}-cluster"
-api_addr               = "https://${vault_node_name}.local:8200"
-cluster_addr           = "https://${vault_node_name}.local:8201"
+api_addr               = "https://${vault_node_name}.${domain}:8200"
+cluster_addr           = "https://${vault_node_name}.${domain}:8201"
 disable_mlock          = true
 ui                     = true
 EOF
@@ -121,7 +121,7 @@ EOF
 sudo chmod -R 0644 /etc/vault.d/*
 
 sudo tee -a /etc/environment <<EOF
-export VAULT_ADDR=https://${vault_node_name}.local:8200
+export VAULT_ADDR=https://${vault_node_name}.${domain}:8200
 export VAULT_SKIP_VERIFY=true
 EOF
 
@@ -172,7 +172,7 @@ echo $(cat /tmp/key.json | jq -r ".recovery_keys_b64[]") > /home/centos/recovery
 sudo chown centos:centos /home/centos/recovery_key
 
 logger "Setting VAULT_ADDR and VAULT_TOKEN"
-export VAULT_ADDR="https://${vault_node_name}.local:8200"
+export VAULT_ADDR="https://${vault_node_name}.${domain}:8200"
 export VAULT_TOKEN=$VAULT_TOKEN
 
 logger "Waiting for Vault to finish preparations (10s)"

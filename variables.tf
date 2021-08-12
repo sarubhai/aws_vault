@@ -59,6 +59,11 @@ variable "fixed_pvt_ip" {
 }
 
 # Instances
+variable "domain" {
+  description = "DNS Domain Name."
+  default     = "local"
+}
+
 variable "vault_dc1_instances" {
   description = "The Vault DC1 Instances."
   default     = { instance_type : "t2.micro", volume : 30, count : 3, pvt_ips : ["10.0.1.91", "10.0.1.92", "10.0.1.93"], nodes : ["dc1-vault1", "dc1-vault2", "dc1-vault3"] }

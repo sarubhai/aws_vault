@@ -112,6 +112,7 @@ resource "aws_instance" "vault_dc1" {
 
   user_data = templatefile("${path.module}/userdata-vault-server.tpl", {
     cluster                  = "dc1",
+    domain                   = var.domain,
     vault_node_name          = var.vault_dc1_instances["nodes"][count.index],
     vault_node_address_names = zipmap(var.vault_dc1_instances["pvt_ips"], var.vault_dc1_instances["nodes"]),
     all_node_address_names   = merge(zipmap(var.vault_dc1_instances["pvt_ips"], var.vault_dc1_instances["nodes"]), zipmap(var.vault_dc2_instances["pvt_ips"], var.vault_dc2_instances["nodes"]), zipmap(var.vault_dc3_instances["pvt_ips"], var.vault_dc3_instances["nodes"])),
@@ -145,6 +146,7 @@ resource "aws_instance" "vault_dc2" {
 
   user_data = templatefile("${path.module}/userdata-vault-server.tpl", {
     cluster                  = "dc2",
+    domain                   = var.domain,
     vault_node_name          = var.vault_dc2_instances["nodes"][count.index],
     vault_node_address_names = zipmap(var.vault_dc2_instances["pvt_ips"], var.vault_dc2_instances["nodes"]),
     all_node_address_names   = merge(zipmap(var.vault_dc1_instances["pvt_ips"], var.vault_dc1_instances["nodes"]), zipmap(var.vault_dc2_instances["pvt_ips"], var.vault_dc2_instances["nodes"]), zipmap(var.vault_dc3_instances["pvt_ips"], var.vault_dc3_instances["nodes"])),
@@ -178,6 +180,7 @@ resource "aws_instance" "vault_dc3" {
 
   user_data = templatefile("${path.module}/userdata-vault-server.tpl", {
     cluster                  = "dc3",
+    domain                   = var.domain,
     vault_node_name          = var.vault_dc3_instances["nodes"][count.index],
     vault_node_address_names = zipmap(var.vault_dc3_instances["pvt_ips"], var.vault_dc3_instances["nodes"]),
     all_node_address_names   = merge(zipmap(var.vault_dc1_instances["pvt_ips"], var.vault_dc1_instances["nodes"]), zipmap(var.vault_dc2_instances["pvt_ips"], var.vault_dc2_instances["nodes"]), zipmap(var.vault_dc3_instances["pvt_ips"], var.vault_dc3_instances["nodes"])),

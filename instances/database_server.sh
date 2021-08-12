@@ -65,7 +65,7 @@ docker-compose up -d
 while [ "`docker inspect -f {{.State.Health.Status}} oracle_src_oracle_src_1`" != "healthy" ]; do
   sleep 60;
 done;
-
+# SYSDBA
 sqlplus -s /nolog <<EOF >${vault_admin_password}
 connect sys/${vault_admin_password}@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=127.0.0.1)(PORT=1521))(CONNECT_DATA=(SID=XE))) as sysdba
 alter user hr account unlock identified by hr;
@@ -101,12 +101,14 @@ services:
       MYSQL_ROOT_PASSWORD: ${vault_admin_password}
     command:
     - --log-bin=binlog
-    - --binlog-format=ROW  
+    - --binlog-format=ROW
+    - --server-id=1
+    - --sql_mode=
 EOF
 
 docker-compose up -d
 # MySQL Source Database
-sleep 60;
+sleep 30;
 
 curl -L https://s3-ap-southeast-1.amazonaws.com/dwbi-datalake/dataset/showroom.sql -o showroom.sql
 curl -L https://s3-ap-southeast-1.amazonaws.com/dwbi-datalake/dataset/customer.sql -o customer.sql
@@ -326,7 +328,7 @@ sudo tee /root/rabbitmq/docker-compose.yml &>/dev/null <<EOF
 version: "3.1"
 services:
   rabbitmq:
-    image: rabbitmq:3-management
+    image: rabbitmq:3.8-management
     container_name: "rabbitmq"
     ports:
       - 5672:5672
