@@ -1,6 +1,6 @@
 # Name: vault.tf
 # Owner: Saurav Mitra
-# Description: This terraform config will create EC2 instances for Vault
+# Description: This terraform config will create EC2 instances & KMS for Vault
 
 
 # Vault AMI Filter

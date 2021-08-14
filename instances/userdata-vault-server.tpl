@@ -1,4 +1,7 @@
-#!/usr/bin/env bash
+#!/bin/bash
+# Name: userdata-vault-server.tpl
+# Owner: Saurav Mitra
+# Description: Install & Configure Vault Clusters with AWS KMS Auto Unseal.
 set -x
 exec > >(tee /var/log/tf-user-data.log|logger -t user-data ) 2>&1
 
@@ -22,7 +25,7 @@ sudo yum -y update
 sudo yum -y install jq
 sudo systemctl start ntpd.service
 sudo systemctl enable ntpd.service
-# awscli
+# Install awscli to download Server SSL certificates from S3
 sudo yum -y install python3-pip
 sudo yes | pip3 install awscli
 
@@ -43,11 +46,11 @@ aws s3 cp s3://${s3_bucket_name}/${vault_node_name}.cert /etc/ssl/vault/${vault_
 aws s3 cp s3://${s3_bucket_name}/${vault_node_name}.key /etc/ssl/vault/${vault_node_name}.key
 sudo chown -R vault:vault /etc/ssl/vault
 sudo chmod -R 0600 /etc/ssl/vault/*
-# Update CA Certs
+# Add/Update Custom CA Certificate
 sudo cp /etc/ssl/vault/ca.cert /etc/pki/ca-trust/source/anchors/ca.cert
 sudo update-ca-trust
 
-## Install Vault
+## Install Vault Enterprise
 logger "Downloading Vault"
 curl -o /tmp/vault.zip https://releases.hashicorp.com/vault/1.7.3+ent/vault_1.7.3+ent_linux_amd64.zip
 logger "Installing Vault"
@@ -55,7 +58,7 @@ sudo unzip -o /tmp/vault.zip -d /usr/local/bin/
 sudo chmod 0755 /usr/local/bin/vault
 sudo chown vault:vault /usr/local/bin/vault
 logger "/usr/local/bin/vault --version: $(/usr/local/bin/vault --version)"
-# Create Directories
+# Create Vault Directories
 logger "Create Vault Directories"
 sudo mkdir -pm 0755 /etc/vault.d
 
@@ -154,7 +157,7 @@ sudo chmod 0664 /etc/systemd/system/vault.service
 sudo systemctl enable vault
 sudo systemctl start vault
 
-## Initialize VAULT
+## Initialize Vault
 %{ if vault_node_name == "${cluster}-vault1" }
 sleep 5
 logger "Initializing Vault and storing results"
@@ -187,7 +190,7 @@ vault write sys/license text=${vault_license}
 sudo yum -y install libaio
 sudo yum-config-manager --add-repo http://yum.oracle.com/repo/OracleLinux/OL7/oracle/instantclient/x86_64
 sudo yum -y install oracle-instantclient19.6-basic oracle-instantclient19.6-devel oracle-instantclient19.6-sqlplus --nogpgcheck
-
+logger "Add Oracle Database Plugin"
 sha256sum /etc/vault/plugin/vault-plugin-database-oracle | awk '{print $1}' >> /home/centos/sha
 sudo chown centos:centos /home/centos/sha
 vault write sys/plugins/catalog/database/oracle-database-plugin sha256="$(cat /home/centos/sha)" command=vault-plugin-database-oracle

@@ -14,6 +14,8 @@ The Cluster/Instances that will be deployed from this repository are:
 
 All Vault instances will be deployed in Private Subnet with fixed Private IP address.
 
+Download Vault Enterprise 30 day trial license from [https://www.hashicorp.com/products/vault/trial](https://www.hashicorp.com/products/vault/trial)
+
 ## Vault Service Ports
 
 - Vault API 8200
@@ -87,7 +89,9 @@ Terraform is already installed in local machine.
 - Change the Terraform backend accordingly in backend.tf
 - Generate & setup IAM user Access & Secret Key
 - Generate a AWS EC2 Key Pair in the region where you want to deploy the Vault cluster
-- Create a Custom CA Cert & Key & Generate 9 sets of Certs & Keys for each of the cluster nodes. (dc1-vault1.local, dc1-vault2.local, dc1-vault3.local, ... dc3-vault3.local)
+- Create a Custom CA Cert & Key (ca.cert, ca.key) [Optional]
+- Generate 9 sets of Certs & Keys for each of the cluster nodes. (dc1-vault1.<domain>, dc1-vault2.<domain>, dc1-vault3.<domain>, ... dc3-vault3.<domain>) as
+  (dc1-vault1.cert, dc1-vault1.key, dc1-vault2.cert, dc1-vault2.key ...)
 - Upload the TLS/SSL certs to a private S3 bucket.
 - Add the below variable values as Terraform Variables under workspace
 
@@ -95,6 +99,8 @@ Terraform is already installed in local machine.
 
 ```
 keypair_name = "vault-us-east-2"
+
+domain = "local"
 
 s3_bucket_name = "vault-tls-certs-bucket"
 
