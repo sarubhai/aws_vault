@@ -34,6 +34,7 @@ module "instances" {
   fixed_pvt_ip         = var.fixed_pvt_ip
   vault_sg_id          = module.sg.vault_sg_id
   database_sg_id       = module.sg.database_sg_id
+  minikube_sg_id       = module.sg.minikube_sg_id
   domain               = var.domain
   vault_dc1_instances  = var.vault_dc1_instances
   vault_dc2_instances  = var.vault_dc2_instances
@@ -43,6 +44,7 @@ module "instances" {
   vault_license        = var.vault_license
   database_instance    = var.database_instance
   vault_admin_password = var.vault_admin_password
+  minikube_instance    = var.minikube_instance
 }
 
 

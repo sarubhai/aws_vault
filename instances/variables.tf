@@ -38,6 +38,10 @@ variable "database_sg_id" {
   description = "Security Group for Database Server."
 }
 
+variable "minikube_sg_id" {
+  description = "Security Group for Minikube Server."
+}
+
 variable "domain" {
   description = "DNS Domain Name."
 }
@@ -72,4 +76,8 @@ variable "database_instance" {
 
 variable "vault_admin_password" {
   description = "The Admin Password for UserPass Auth."
+}
+
+variable "minikube_instance" {
+  description = "The Minikube Server Instance."
 }

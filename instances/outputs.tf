@@ -21,3 +21,8 @@ output "database_server_ip" {
   value       = aws_instance.database-server.private_ip
   description = "Database Server IP."
 }
+
+output "minikube_server_ip" {
+  value       = aws_instance.minikube-server.private_ip
+  description = "Minikube Server IP."
+}

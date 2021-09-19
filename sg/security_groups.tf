@@ -2,6 +2,7 @@
 # Owner: Saurav Mitra
 # Description: This terraform config will create the Security Group for Vault Server
 
+# Create Vault Security Group
 resource "aws_security_group" "vault_sg" {
   name        = "${var.prefix}_vault_sg"
   description = "Security Group for Vault"
@@ -192,6 +193,48 @@ resource "aws_security_group" "database_sg" {
 
   tags = {
     Name  = "${var.prefix}-database-sg"
+    Owner = var.owner
+  }
+}
+
+# Create Minikube Security Group
+resource "aws_security_group" "minikube_sg" {
+  name        = "${var.prefix}_minikube_sg"
+  description = "Security Group for Minikube"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    description = "SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = [var.vpc_cidr_block]
+  }
+
+  ingress {
+    description = "Allow workers pods to receive communication from the cluster control plane."
+    from_port   = 0
+    to_port     = 65535
+    protocol    = "tcp"
+    cidr_blocks = [var.vpc_cidr_block]
+  }
+
+  ingress {
+    from_port   = -1
+    to_port     = -1
+    protocol    = "icmp"
+    cidr_blocks = [var.vpc_cidr_block]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = [var.internet_cidr_block]
+  }
+
+  tags = {
+    Name  = "${var.prefix}-minikube-sg"
     Owner = var.owner
   }
 }

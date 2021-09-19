@@ -11,3 +11,8 @@ output "database_sg_id" {
   value       = aws_security_group.database_sg.id
   description = "Security Group for Database Server."
 }
+
+output "minikube_sg_id" {
+  value       = aws_security_group.minikube_sg.id
+  description = "Security Group for Minikube Server."
+}

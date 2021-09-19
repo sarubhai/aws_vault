@@ -49,6 +49,11 @@ output "database_server_ip" {
   description = "Database Server IP."
 }
 
+output "minikube_server_ip" {
+  value       = module.instances.minikube_server_ip
+  description = "Minikube Server IP."
+}
+
 
 # OpenVPN Access Server
 output "openvpn_access_server_ip" {

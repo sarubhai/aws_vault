@@ -97,6 +97,10 @@ variable "vault_admin_password" {
   default     = "Password123456"
 }
 
+variable "minikube_instance" {
+  description = "The Minikube Server Instance."
+  default     = { instance_type : "t2.medium", pvt_ip : "10.0.1.200" }
+}
 
 # OpenVPN Access Server
 variable "openvpn_server_ami_name" {
