@@ -10,7 +10,8 @@ The Cluster/Instances that will be deployed from this repository are:
 - Vault's storage backend is Raft Integrated Storage
 - Vault Cluster Nodes are TLS secured
 - All the Vault Clusters Unseal is configured as Auto using AWS KMS
-- 1 EC2 Instance installed with multiple demo database types
+- 1 EC2 Instance installed with multiple demo database types [SSH Login to centos@10.0.1.100]
+- 1 EC2 Instance installed with Kubernetes Minikube & kubectl [SSH Login to ubuntu@10.0.1.200]
 
 All Vault instances will be deployed in Private Subnet with fixed Private IP address.
 
