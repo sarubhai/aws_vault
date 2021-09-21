@@ -32,6 +32,8 @@ sudo chmod -R u+wrx /root/.minikube
 
 minikube addons enable dashboard
 minikube addons enable metrics-server
+minikube addons enable ingress
+
 
 # Install Kubectl
 sudo curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
